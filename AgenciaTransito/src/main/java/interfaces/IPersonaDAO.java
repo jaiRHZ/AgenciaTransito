@@ -16,7 +16,7 @@ public interface IPersonaDAO {
     
     public Persona updatePersona(Persona persona);
     
-    public void deletePersona();
+    public void deletePersona(Persona persona);
     
     public List<Persona> readAllPersona(Persona persona);
 }

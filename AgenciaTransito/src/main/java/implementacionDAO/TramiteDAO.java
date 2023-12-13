@@ -2,12 +2,14 @@
 package implementacionDAO;
 
 
+import Dominio.Costo;
 import Dominio.Tramite;
 import conexionBD.IConexionBD;
 import interfaces.ITramiteDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -94,8 +96,25 @@ public class TramiteDAO implements ITramiteDAO{
     }
 
     @Override
-    public void deleteTramite() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void deleteTramite(Tramite tramite) {
+        EntityManagerFactory em = iConexionBD.useConnectionMySQL();
+        EntityManager bd = em.createEntityManager();
+        try {
+            bd.getTransaction().begin();
+            try {
+                tramite = bd.find(Tramite.class, tramite.getId());
+            } catch (EntityNotFoundException enfe) {
+            }
+            if (tramite != null) {
+                bd.remove(tramite);
+            }
+            //comentario = em.merge(comentario);
+            bd.getTransaction().commit();
+        } finally {
+            if (bd != null) {
+                bd.close();
+            }
+        }
     }
 
     @Override

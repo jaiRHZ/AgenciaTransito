@@ -16,7 +16,7 @@ public interface IVehiculoDAO {
     
     public Vehiculo updateVehiculo(Vehiculo vehiculo);
     
-    public void deleteVehiculo();
+    public void deleteVehiculo(Vehiculo vehiculo);
     
     public List<Vehiculo> readAllVehiculo(Vehiculo vehiculo);
 }

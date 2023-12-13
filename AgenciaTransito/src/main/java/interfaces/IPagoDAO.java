@@ -16,7 +16,7 @@ public interface IPagoDAO {
     
     public Pago updatePago(Pago pago);
     
-    public void deletePago();
+    public void deletePago(Pago pago);
     
     public List<Pago> updateAllPago(Pago pago);
 }

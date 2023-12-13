@@ -8,6 +8,7 @@ import interfaces.IPersonaDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -99,7 +100,25 @@ public class PersonaDAO implements IPersonaDAO{
     }
 
     @Override
-    public void deletePersona() {
+    public void deletePersona(Persona persona) {
+        EntityManagerFactory em = iConexionBD.useConnectionMySQL();
+        EntityManager bd = em.createEntityManager();
+        try {
+            bd.getTransaction().begin();
+            try {
+                persona = bd.find(Persona.class, persona.getRfc());
+            } catch (EntityNotFoundException enfe) {
+            }
+            if (persona != null) {
+                bd.remove(persona);
+            }
+            //comentario = em.merge(comentario);
+            bd.getTransaction().commit();
+        } finally {
+            if (bd != null) {
+                bd.close();
+            }
+        }
     }
 
     @Override

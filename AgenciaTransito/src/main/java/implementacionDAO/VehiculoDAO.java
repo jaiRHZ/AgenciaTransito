@@ -1,12 +1,14 @@
 
 package implementacionDAO;
 
+import Dominio.Costo;
 import Dominio.Vehiculo;
 import conexionBD.IConexionBD;
 import interfaces.IVehiculoDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -93,8 +95,25 @@ public class VehiculoDAO implements IVehiculoDAO{
     }
 
     @Override
-    public void deleteVehiculo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void deleteVehiculo(Vehiculo vehiculo) {
+        EntityManagerFactory em = iConexionBD.useConnectionMySQL();
+        EntityManager bd = em.createEntityManager();
+        try {
+            bd.getTransaction().begin();
+            try {
+                vehiculo = bd.find(Vehiculo.class, vehiculo.getSerie());
+            } catch (EntityNotFoundException enfe) {
+            }
+            if (vehiculo != null) {
+                bd.remove(vehiculo);
+            }
+            //comentario = em.merge(comentario);
+            bd.getTransaction().commit();
+        } finally {
+            if (bd != null) {
+                bd.close();
+            }
+        }
     }
 
     @Override

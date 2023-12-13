@@ -16,7 +16,7 @@ public interface ICostoDAO {
     
     public Costo updateCosto(Costo costo);
     
-    public void deleteCosto();
+    public void deleteCosto(Costo costo);
     
     public List<Costo> readAllCosto();
     

@@ -7,6 +7,7 @@ import interfaces.ICostoDAO;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -90,8 +91,25 @@ public class CostoDAO implements ICostoDAO{
     }
 
     @Override
-    public void deleteCosto() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void deleteCosto(Costo costo) {
+        EntityManagerFactory em = iConexionBD.useConnectionMySQL();
+        EntityManager bd = em.createEntityManager();
+        try {
+            bd.getTransaction().begin();
+            try {
+                costo = bd.find(Costo.class, costo.getId());
+            } catch (EntityNotFoundException enfe) {
+            }
+            if (costo != null) {
+                bd.remove(costo);
+            }
+            //comentario = em.merge(comentario);
+            bd.getTransaction().commit();
+        } finally {
+            if (bd != null) {
+                bd.close();
+            }
+        }
     }
 
     @Override

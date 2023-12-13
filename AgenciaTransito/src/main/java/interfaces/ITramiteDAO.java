@@ -16,7 +16,7 @@ public interface ITramiteDAO {
     
     public Tramite updateTramite(Tramite tramite);
     
-    public void deleteTramite();
+    public void deleteTramite(Tramite tramite);
     
     public List<Tramite> readAllTramite(Tramite tramite);
 }
